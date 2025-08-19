@@ -1,16 +1,34 @@
 using DG.Tweening;
+using Singleton.Component;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class HandManager : MonoBehaviour
+public class HandManager : SingletonComponent<HandManager>
 {
     [SerializeField] private int maxHandSize = 10;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Transform spawnPoint;
 
-    private List<GameObject> handCards = new();
+    public List<GameObject> handCards = new();
+
+    #region Singleton
+    protected override void AwakeInstance()
+    {
+        
+    }
+
+    protected override bool InitInstance()
+    {
+        return true;
+    }
+
+    protected override void ReleaseInstance()
+    {
+        
+    }
+    #endregion Singleton
 
     private void Update()
     {
@@ -37,7 +55,7 @@ public class HandManager : MonoBehaviour
         UpdateCardPositions();
     }
 
-    private void UpdateCardPositions()
+    public void UpdateCardPositions()
     {
         if(handCards.Count == 0) return;
         float cardSpacing = 1f / maxHandSize;
