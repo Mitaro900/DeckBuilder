@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    [SerializeField] private CardData data;
+
     private Collider2D col;
     private Vector3 startDragPosition;
 
@@ -11,13 +13,24 @@ public class Card : MonoBehaviour
         col = GetComponent<Collider2D>();
     }
 
+    public void PerformEffect()
+    {
+        foreach (var effect in data.effects)
+        {
+            effect.Perform();
+        }
+    }
+
     private void OnMouseDown()
     {
         startDragPosition = transform.position;
-        StartCoroutine(RotateCo(Quaternion.Euler(0, 0, 0))); // Rotate card slightly on drag start
+        StartCoroutine(RotateCo(Quaternion.Euler(0, 0, 0)));
         transform.position = GetMousePositionInWorldSpace();
-        HandManager.Instance.handCards.Remove(gameObject); // Remove card from hand when dragging starts
-        HandManager.Instance.UpdateCardPositions(); // Update card positions in hand when dragging starts
+        if (HandManager.Instance.handCards.Contains(gameObject))
+        {
+            HandManager.Instance.handCards.Remove(gameObject); // Remove card from hand when dragging starts
+            HandManager.Instance.UpdateCardPositions(); // Update card positions in hand when dragging starts
+        }
     }
 
     private void OnMouseDrag()
