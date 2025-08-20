@@ -1,80 +1,25 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+public class Card
 {
-    [SerializeField] private CardData data;
+    private readonly CardData cardData;
 
-    private Collider2D col;
-    private Vector3 startDragPosition;
-
-    private void Start()
+    public Card(CardData _cardData)
     {
-        col = GetComponent<Collider2D>();
+        cardData = _cardData;
     }
+
+    public Sprite Sprite { get => cardData.Sprite; }
+    public string Title { get => cardData.name; }
+    public int Cost { get => cardData.Cost; }
+    public List<CardEffect> Effects { get => cardData.Effects; }
 
     public void PerformEffect()
     {
-        foreach (var effect in data.effects)
+        foreach (var effect in cardData.Effects)
         {
             effect.Perform();
         }
-    }
-
-    private void OnMouseDown()
-    {
-        startDragPosition = transform.position;
-        StartCoroutine(RotateCo(Quaternion.Euler(0, 0, 0)));
-        transform.position = GetMousePositionInWorldSpace();
-        if (HandManager.Instance.handCards.Contains(gameObject))
-        {
-            HandManager.Instance.handCards.Remove(gameObject); // Remove card from hand when dragging starts
-            HandManager.Instance.UpdateCardPositions(); // Update card positions in hand when dragging starts
-        }
-    }
-
-    private void OnMouseDrag()
-    {
-        transform.position = GetMousePositionInWorldSpace();
-    }
-
-    private void OnMouseUp()
-    {
-        col.enabled = false;
-        Collider2D hitCollider = Physics2D.OverlapPoint(transform.position);
-        col.enabled = true;
-        if(hitCollider != null && hitCollider.TryGetComponent(out ICardDropArea cardDropArea))
-        {
-            cardDropArea.OnCardDrop(this);
-        }
-        else
-        {
-            transform.position = startDragPosition;
-            StopAllCoroutines();
-            HandManager.Instance.handCards.Add(gameObject); // Re-add card to hand if not dropped in a valid area
-            HandManager.Instance.UpdateCardPositions(); // Update card positions in hand when dragging ends
-        }
-    }
-
-    public Vector3 GetMousePositionInWorldSpace()
-    {
-        Vector3 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        p.z = 0f; // Assuming a 2D game, set z to 0
-        return p;
-    }
-
-    private IEnumerator RotateCo(Quaternion targetRotation)
-    {
-        float duration = 0.25f;
-        float elapsed = 0f;
-        Quaternion startRotation = transform.rotation;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
-            yield return null;
-        }
-        transform.rotation = targetRotation; // Ensure final rotation is set
     }
 }
