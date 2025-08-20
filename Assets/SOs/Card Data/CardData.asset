@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d73bb8601fdc92459584218856ec2e6, type: 3}
   m_Name: CardData
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 0}
-  <Cost>k__BackingField: 0
+  <Sprite>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  <Cost>k__BackingField: 10
   <Effects>k__BackingField:
   - rid: 2118236002950578479
   references:

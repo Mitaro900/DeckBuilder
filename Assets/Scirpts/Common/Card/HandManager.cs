@@ -50,8 +50,9 @@ public class HandManager : SingletonComponent<HandManager>
     {
         if (handCards.Count >= maxHandSize) return;
 
-        GameObject go = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
-        handCards.Add(go);
+        //GameObject go = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
+        //handCards.Add(go);
+        GameManager.Instance.DrawCard();
         UpdateCardPositions();
     }
 

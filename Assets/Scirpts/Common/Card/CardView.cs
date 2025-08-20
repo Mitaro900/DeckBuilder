@@ -1,11 +1,11 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer cardImage;
+    [SerializeField] private Image cardImage;
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI cost;
 
