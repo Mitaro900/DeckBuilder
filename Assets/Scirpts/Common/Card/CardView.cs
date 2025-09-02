@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class CardView : MonoBehaviour
 
     private Collider2D col;
     private Vector3 startDragPosition;
+    private int indexInHand = -1;
 
     private void Start()
     {
@@ -30,10 +32,11 @@ public class CardView : MonoBehaviour
     private void OnMouseDown()
     {
         startDragPosition = transform.position;
-        StartCoroutine(RotateCo(Quaternion.Euler(0, 0, 0)));
+        transform.DOLocalRotateQuaternion(Quaternion.Euler(0f, 0f, 0f), 0.25f);
         transform.position = GetMousePositionInWorldSpace();
         if (HandManager.Instance.handCards.Contains(gameObject))
         {
+            indexInHand = HandManager.Instance.handCards.IndexOf(gameObject);
             HandManager.Instance.handCards.Remove(gameObject); // Remove card from hand when dragging starts
             HandManager.Instance.UpdateCardPositions(); // Update card positions in hand when dragging starts
         }
@@ -55,9 +58,16 @@ public class CardView : MonoBehaviour
         }
         else
         {
-            transform.position = startDragPosition;
+            //transform.position = startDragPosition;
             StopAllCoroutines();
-            HandManager.Instance.handCards.Add(gameObject); // Re-add card to hand if not dropped in a valid area
+            if(indexInHand != -1)
+            {
+                HandManager.Instance.handCards.Insert(indexInHand, gameObject);
+            }
+            else
+            {
+                HandManager.Instance.handCards.Add(gameObject);
+            }
             HandManager.Instance.UpdateCardPositions(); // Update card positions in hand when dragging ends
         }
     }
