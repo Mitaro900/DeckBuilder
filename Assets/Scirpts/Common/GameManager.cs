@@ -28,13 +28,7 @@ public class GameManager : SingletonComponent<GameManager>
 
     private void Start()
     {
-        deck = new();
-        for(int i = 0; i < 10; i++)
-        {
-            CardData data = cardDatas[Random.Range(0, cardDatas.Count)];
-            Card card = new(data);
-            deck.Add(card);
-        }
+        SettingDeck();
     }
 
     public void DrawCard()
@@ -44,5 +38,16 @@ public class GameManager : SingletonComponent<GameManager>
         CardView view = Instantiate(cardView);
         view.Setup(drawnCard);
         HandManager.Instance.handCards.Add(view.gameObject);
+    }
+
+    public void SettingDeck()
+    {
+        deck = new();
+        for (int i = 0; i < 10; i++)
+        {
+            CardData data = cardDatas[Random.Range(0, cardDatas.Count)];
+            Card card = new(data);
+            deck.Add(card);
+        }
     }
 }

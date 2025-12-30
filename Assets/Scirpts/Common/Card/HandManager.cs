@@ -2,6 +2,7 @@ using DG.Tweening;
 using Singleton.Component;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Splines;
 
 public class HandManager : SingletonComponent<HandManager>
@@ -16,7 +17,7 @@ public class HandManager : SingletonComponent<HandManager>
     #region Singleton
     protected override void AwakeInstance()
     {
-        
+        Initialize();
     }
 
     protected override bool InitInstance()
@@ -32,7 +33,7 @@ public class HandManager : SingletonComponent<HandManager>
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             DrawCard();
         }
@@ -43,6 +44,7 @@ public class HandManager : SingletonComponent<HandManager>
                 Destroy(card);
             }
             handCards.Clear();
+            GameManager.Instance.SettingDeck();
         }
     }
 
